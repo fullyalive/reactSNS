@@ -9,16 +9,17 @@
 const fs = require("fs");
 const fileName = "target.txt";
 
-// syncronous 
-const data = fs.readFileSync(fileName)
+const errHandler = err => console.log(err);
+const dataHandler = data => console.log(data.toString());
+
+// syncronous
+const data = fs.readFileSync(fileName);
 console.log(data.toString());
 
 // asyncronous
 fs.readFile(fileName, (err, data) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log(data.toString());
+  if (err) errHandler(err);
+  dataHandler(data);
 });
 
-console.log("Node js async programming ... ?")
+console.log("Node js async programming ... ?");
