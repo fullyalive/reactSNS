@@ -1,9 +1,12 @@
-// const helpers = require('./helpers');
-// const total = helpers.sum(10, 200);
+// const express = require("express");
+// const app = express();
 
-const { sum, add } = require('./helpers');
-const total = sum(10, 200);
-const total2 = add(200, 10);
+// app.get("/", (req, res) => {
+//   res.send("hey whatup from express");
+// });
 
-console.log("Total : ", total)
-console.log("Total2 : ", total2);
+// app.listen(3000);
+const fs = require("fs");
+const fileName = "target.txt";
+
+fs.watch(fileName, () => console.log(`File changed!`));
