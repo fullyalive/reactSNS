@@ -8,7 +8,7 @@ dotenv.config();
 
 // db
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(() => console.log("✅ DB Connected"));
 const PORT = process.env.PORT || 8888;
 
