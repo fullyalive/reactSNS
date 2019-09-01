@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const expressJwt = require("express-jwt");
 const User = require("../models/user");
 require("dotenv").config();
 
@@ -45,3 +46,7 @@ exports.signout = (req, res) => {
   res.clearCookie("t");
   return res.json({ message: "로그아웃 되었습니다." });
 };
+
+exports.requireSignin = expressJwt({
+  secret: process.env.JWT_SECRET
+});

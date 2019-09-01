@@ -26,6 +26,11 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use("/", postRoutes);
 app.use("/", authRoutes);
+app.use(function(err, req, res, next) {
+  if (err.name === "UnauthorizedError") {
+    res.status(401).json({ error: "로그아웃되었습니다. 다시 로그인해주세요." });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`✅ A Node JS API is listening on port: ${PORT}`);
