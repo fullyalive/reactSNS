@@ -11,3 +11,13 @@ exports.userById = (req, res, next, id) => {
     next();
   });
 };
+
+exports.hasAuthorization = (req, res, next) => {
+  const authorized =
+    req.profile && req.auth && req.profile._id === req.auth._id;
+  if (!authorized) {
+    return res.status(403).json({
+      error: "권한이 없습니다."
+    }); 
+  }
+};
