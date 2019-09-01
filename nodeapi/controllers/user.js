@@ -18,6 +18,6 @@ exports.hasAuthorization = (req, res, next) => {
   if (!authorized) {
     return res.status(403).json({
       error: "권한이 없습니다."
-    }); 
+    });
   }
 };
