@@ -1,11 +1,13 @@
 const express = require("express");
-const { userById, allUsers } = require("../controllers/user");
+const { userById, allUsers, getUser } = require("../controllers/user");
+const { requireSignin } = require("../controllers/auth");
 
 const router = express.Router();
 
 router.get("/users", allUsers);
+router.get("/user/:userId", getUser);
 
 // any route containing : userId, our app will first execute userById()
-router.param("userId", userById);
+router.param("userId", requireSignin, userById);
 
 module.exports = router;
