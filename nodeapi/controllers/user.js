@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const User = require("../models/user");
 
 exports.userById = (req, res, next, id) => {
@@ -37,4 +38,20 @@ exports.getUser = (req, res) => {
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
   return res.json(req.profile);
+};
+
+exports.updateUser = (req, res, next) => {
+  let user = req.profile;
+  user = _.extend(user, req.body); // extend - mutate the source object
+  user.updated = Date.now();
+  user.save(err => {
+    if (err) {
+      return res.status(400).json({
+        error: "권한이 없습니다."
+      });
+    }
+    user.hashed_password = undefined;
+    user.salt = undefined;
+    res.json({ user });
+  });
 };
