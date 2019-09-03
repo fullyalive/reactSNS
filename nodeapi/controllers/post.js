@@ -21,6 +21,8 @@ exports.createPost = (req, res, next) => {
       });
     }
     let post = new Post(fields);
+    req.profile.hashed_password = undefined;
+    req.profile.salt = undefined;
     post.postedBy = req.profile;
     if (files.photo) {
       post.photo.data = fs.readFileSync(files.photo.path);
