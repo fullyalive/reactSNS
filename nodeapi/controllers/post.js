@@ -67,3 +67,33 @@ exports.postsByUser = (req, res) => {
       res.json(posts);
     });
 };
+
+exports.isPoster = (req, res, next) => {
+  let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
+
+  // console.log("req.post: ", req.post);
+  // console.log("req.auth: ", req.auth);
+  // console.log("req.post.postedBy._id: ", req.post.postedBy._id);
+  // console.log("req.auth._id: ", req.auth._id);
+
+  if (!isPoster) {
+    return res.status(403).json({
+      error: "삭제 권한이 없습니다."
+    });
+  }
+  next();
+};
+
+exports.deletePost = (req, res) => {
+  let post = req.post;
+  post.remove((err, post) => {
+    if (err) {
+      return res.status(400).json({
+        error: err
+      });
+    }
+    res.json({
+      message: "성공적으로 삭제되었습니다."
+    });
+  });
+};

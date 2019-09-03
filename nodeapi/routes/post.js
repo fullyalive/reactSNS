@@ -3,7 +3,9 @@ const {
   getPosts,
   createPost,
   postsByUser,
-  postById
+  postById,
+  isPoster,
+  deletePost
 } = require("../controllers/post");
 const { requireSignin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -18,7 +20,8 @@ router.post(
   createPost,
   createPostValidator
 );
-router.get("/posts/:userId", postsByUser);
+router.get("/posts/:userId", requireSignin, postsByUser);
+router.delete("/posts/:postId", requireSignin, isPoster, deletePost);
 
 // any route containing : userId, our app will first execute userById()
 router.param("userId", userById);
