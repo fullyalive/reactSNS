@@ -4,6 +4,7 @@ const fs = require("fs");
 
 exports.getPosts = (req, res) => {
   const posts = Post.find()
+    .populate("postedBy", "_id name")
     .select("_id title body") // 보여주고자 하는 field
     .then(posts => {
       res.status(200).json({ posts });
