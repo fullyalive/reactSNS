@@ -1,3 +1,28 @@
+// Rest opertaors
+var rivers = ["Sunkoshi", "Tamakoshhi", "Saptakoshi"];
+var [first, ...rest] = rivers;
+
+console.log(rest); // Tamakoshhi, Saptakoshi
+
+// Spread operators
+var mountains = ["Everest", "Fish Tail", "Annapurna"];
+var mountainsFromJapan = ["Fuji"];
+
+var allMountains = [...mountains, ...mountainsFromJapan];
+console.log(allMountains); // Everest, Fish Tail, Annapurna, Fuji
+
+var day = {
+  breakfast: "toast with milk",
+  lunch: "rice with chicken curry"
+};
+
+var night = {
+  dinner: "noddle soup"
+};
+
+var picnic = { ...day, ...night };
+console.log(picnic); // breakfast: "toast with milk", lunch: "rice with chicken curry", dinner: "noodle soup"
+
 // Restructuring Object
 
 var name = "Everest";
