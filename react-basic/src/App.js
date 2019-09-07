@@ -6,14 +6,19 @@ class App extends Component {
     super(props);
     // state
     this.state = {
-      users: []
+      users: [],
+      loading: false
     };
   }
 
   getUsers() {
+    this.setState({
+      loading: true
+    }); // data를 불러오기 전 loading 활성화
     axios("https://api.randomuser.me/?nat=US&results=5").then(response =>
       this.setState({
-        users: response.data.results
+        users: response.data.results,
+        loading: false // data를 불러오고 나면 loading 비활성화
       })
     );
   }
@@ -25,16 +30,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.users.map(user => (
-          <div>
-            {user.name.first} {user.name.last}
-            <hr />
-            <ul>
-              <li>{user.email}</li>
-              <li>{user.cell}</li>
-            </ul>
-          </div>
-        ))}
+        {!this.state.loading ? (
+          this.state.users.map(user => (
+            <div>
+              {user.name.first} {user.name.last}
+              <hr />
+              <ul>
+                <li>{user.email}</li>
+                <li>{user.cell}</li>
+              </ul>
+            </div>
+          ))
+        ) : (
+          <div>Loading</div>
+        )}
       </div>
     );
   }
