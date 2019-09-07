@@ -37,20 +37,24 @@ class App extends Component {
   } // Component가 mount되기 전에 API를 부르고 싶을 때 사용
 
   render() {
+    const { loading, users } = this.state;
     return (
       <div className="App">
-        {!this.state.loading ? (
-          this.state.users.map(user => (
-            <div>
-              {user.name.first} {user.name.last}
+        <form onSubmit={this.handleSubmit}>
+          <input type="submit" value="load users" />
+        </form>
+        <div>found users : {users.length}</div>
+        {!loading ? (
+          users.map(user => (
+            <div key={user.id.value}>
+              <h3 style={{ color: "blue" }}>
+                {user.name.first} {user.name.last}
+              </h3>
               <hr />
               <ul>
                 <li>{user.email}</li>
                 <li>{user.cell}</li>
               </ul>
-              <form onSubmit={this.handleSubmit}>
-                <input type="submit" value="load users" />
-              </form>
             </div>
           ))
         ) : (
