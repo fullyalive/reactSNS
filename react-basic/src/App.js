@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Loading from "./Loading";
 
 class App extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class App extends Component {
             </div>
           ))
         ) : (
-          <div>Loading</div>
+          <Loading message="Hey It is Loading" />
         )}
       </div>
     );
