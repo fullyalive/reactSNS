@@ -10,6 +10,8 @@ class App extends Component {
       users: [],
       loading: false
     };
+    // bind
+    this.handleSubmit = this.handleSubmit.bind(this); // handleSubmit을 class App과 묶어주는 것
   }
 
   getUsers() {
@@ -18,10 +20,16 @@ class App extends Component {
     }); // data를 불러오기 전 loading 활성화
     axios("https://api.randomuser.me/?nat=US&results=5").then(response =>
       this.setState({
-        users: response.data.results,
+        users: [...this.state.users, ...response.data.results],
         loading: false // data를 불러오고 나면 loading 비활성화
       })
     );
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.getUsers();
+    console.log("more users loaded");
   }
 
   componentWillMount() {
@@ -40,6 +48,9 @@ class App extends Component {
                 <li>{user.email}</li>
                 <li>{user.cell}</li>
               </ul>
+              <form onSubmit={this.handleSubmit}>
+                <input type="submit" value="load users" />
+              </form>
             </div>
           ))
         ) : (
