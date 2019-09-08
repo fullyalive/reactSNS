@@ -15,6 +15,28 @@ class Signup extends Component {
     this.setState({ [name]: event.target.value });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    const { name, email, password } = this.state;
+    const user = {
+      name,
+      email,
+      password
+    };
+    fetch("http://localhost:8888/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .catch(err => console.log(err));
+  };
+
   render() {
     const { name, email, password } = this.state;
     return (
@@ -45,7 +67,7 @@ class Signup extends Component {
               value={password}
             ></input>
           </div>
-          <button>가입하기</button>
+          <button onClick={this.handleSubmit}>가입하기</button>
         </form>
       </div>
     );
