@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 class Signin extends Component {
   constructor() {
@@ -9,6 +10,13 @@ class Signin extends Component {
       error: "",
       redirectToReferer: false
     };
+  }
+
+  authenticate(jwt, next) {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("jwt", JSON.stringify(jwt));
+      next();
+    }
   }
 
   handleChange = name => event => {
@@ -26,10 +34,12 @@ class Signin extends Component {
     this.signin(user).then(data => {
       if (data.error) this.setState({ error: data.error });
       else {
-          // authenticate
-          // redirect
+        // authenticate
+        this.authenticate(data, () => {
+          this.setState({ redirectToReferer: true });
+        });
+        // redirect
       }
-     
     });
   };
 
@@ -73,7 +83,11 @@ class Signin extends Component {
   };
 
   render() {
-    const { email, password, error } = this.state;
+    const { email, password, error, redirectToReferer } = this.state;
+
+    if (redirectToReferer) {
+      return <Redirect to="/" />; // from react-router-dom
+    }
     return (
       <div>
         <h2>로그인</h2>
