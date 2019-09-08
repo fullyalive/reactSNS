@@ -23,7 +23,20 @@ class Signup extends Component {
       email,
       password
     };
-    fetch("http://localhost:8888/signup", {
+    this.signup(user).then(data => {
+      if (data.error) this.setState({ error: data.error });
+      else
+        this.setState({
+          error: "",
+          name: "",
+          email: "",
+          password: ""
+        });
+    });
+  };
+
+  signup = user => {
+    return fetch("http://localhost:8888/signup", {
       method: "POST",
       headers: {
         Accept: "application/json",
