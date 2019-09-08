@@ -53,6 +53,38 @@ class Signup extends Component {
       .catch(err => console.log(err));
   };
 
+  signupForm = (name, email, password, open) => {
+    return (
+      <form style={{ display: open ? "none" : "" }}>
+        <div>
+          <label>이름</label>
+          <input
+            onChange={this.handleChange("name")}
+            type="text"
+            value={name}
+          ></input>
+        </div>
+        <div>
+          <label>이메일</label>
+          <input
+            onChange={this.handleChange("email")}
+            type="email"
+            value={email}
+          ></input>
+        </div>
+        <div>
+          <label>비밀번호</label>
+          <input
+            onChange={this.handleChange("password")}
+            type="password"
+            value={password}
+          ></input>
+        </div>
+        <button onClick={this.handleSubmit}>가입하기</button>
+      </form>
+    );
+  };
+
   render() {
     const { name, email, password, error, open } = this.state;
     return (
@@ -64,33 +96,8 @@ class Signup extends Component {
         </div>
         {/* 회원가입 후 아이디 표시 되도록 */}
         {/* <div style={{ display: open ? "" : "none" }}>ID: </div>  */}
-        <form style={{ display: open ? "none" : "" }}>
-          <div>
-            <label>이름</label> 
-            <input
-              onChange={this.handleChange("name")}
-              type="text"
-              value={name}
-            ></input>
-          </div>
-          <div>
-            <label>이메일</label>
-            <input
-              onChange={this.handleChange("email")}
-              type="email"
-              value={email}
-            ></input>
-          </div>
-          <div>
-            <label>비밀번호</label>
-            <input
-              onChange={this.handleChange("password")}
-              type="password"
-              value={password}
-            ></input>
-          </div>
-          <button onClick={this.handleSubmit}>가입하기</button>
-        </form>
+
+        {this.signupForm(name, email, password, open)}
       </div>
     );
   }
