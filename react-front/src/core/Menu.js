@@ -10,7 +10,7 @@ const isActive = (history, path) => {
 export const signout = next => {
   if (typeof window !== "undefined") localStorage.removeItem("jwt");
   next();
-  return fetch("http://localhost:8080/signout", {
+  return fetch("http://localhost:8888/signout", {
     method: "GET"
   })
     .then(response => {
@@ -20,24 +20,41 @@ export const signout = next => {
     .catch(err => console.log(err));
 };
 
+export const isAuthenticated = () => {
+  if (typeof window == "undefined") {
+    return false;
+  }
+  if (localStorage.getItem("jwt")) {
+    return JSON.parse(localStorage.getItem("jwt"));
+  } else {
+    return false;
+  }
+};
+
 const Menu = ({ history }) => {
   return (
     <div>
       <Link style={isActive(history, "/")} to="/">
         홈
       </Link>
-      <Link style={isActive(history, "/signin")} to="/signin">
-        로그인
-      </Link>
-      <Link style={isActive(history, "/signup")} to="/signup">
-        회원가입
-      </Link>
-      <a
-        style={(isActive(history, "/signout"), { cursor: "pointer" })}
-        onClick={() => signout(() => history.push("/"))}
-      >
-        로그아웃
-      </a>
+      {!isAuthenticated() && (
+        <>
+          <Link style={isActive(history, "/signin")} to="/signin">
+            로그인
+          </Link>
+          <Link style={isActive(history, "/signup")} to="/signup">
+            회원가입
+          </Link>
+        </>
+      )}
+      {isAuthenticated() && (
+        <a
+          style={(isActive(history, "/signout"), { cursor: "pointer" })}
+          onClick={() => signout(() => history.push("/"))}
+        >
+          로그아웃
+        </a>
+      )}
     </div>
   );
 };
