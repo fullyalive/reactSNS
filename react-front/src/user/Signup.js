@@ -7,11 +7,13 @@ class Signup extends Component {
       name: "",
       email: "",
       password: "",
-      error: ""
+      error: "",
+      open: false
     };
   }
 
   handleChange = name => event => {
+    this.setState({ error: "" });
     this.setState({ [name]: event.target.value });
   };
 
@@ -30,7 +32,8 @@ class Signup extends Component {
           error: "",
           name: "",
           email: "",
-          password: ""
+          password: "",
+          open: true
         });
     });
   };
@@ -51,13 +54,19 @@ class Signup extends Component {
   };
 
   render() {
-    const { name, email, password } = this.state;
+    const { name, email, password, error, open } = this.state;
     return (
       <div>
         <h2>회원가입</h2>
-        <form>
+        <div style={{ display: error ? "" : "none" }}>{error}</div>
+        <div style={{ display: open ? "" : "none" }}>
+          회원가입 성공! 로그인해주세요.
+        </div>
+        {/* 회원가입 후 아이디 표시 되도록 */}
+        {/* <div style={{ display: open ? "" : "none" }}>ID: </div>  */}
+        <form style={{ display: open ? "none" : "" }}>
           <div>
-            <label>이름</label>
+            <label>이름</label> 
             <input
               onChange={this.handleChange("name")}
               type="text"
