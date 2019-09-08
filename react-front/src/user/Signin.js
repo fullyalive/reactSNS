@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 
-class Signup extends Component {
+class Signin extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
       email: "",
       password: "",
       error: "",
-      open: false
+      redirectToReferer: false
     };
   }
 
@@ -19,27 +18,23 @@ class Signup extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name, email, password } = this.state;
+    const { email, password } = this.state;
     const user = {
-      name,
       email,
       password
     };
-    this.signup(user).then(data => {
+    this.signin(user).then(data => {
       if (data.error) this.setState({ error: data.error });
-      else
-        this.setState({
-          name: "",
-          email: "",
-          password: "",
-          error: "",
-          open: true
-        });
+      else {
+          // authenticate
+          // redirect
+      }
+     
     });
   };
 
-  signup = user => {
-    return fetch("http://localhost:8888/signup", {
+  signin = user => {
+    return fetch("http://localhost:8888/signin", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -53,17 +48,9 @@ class Signup extends Component {
       .catch(err => console.log(err));
   };
 
-  signupForm = (name, email, password, open) => {
+  signinForm = (email, password) => {
     return (
-      <form style={{ display: open ? "none" : "" }}>
-        <div>
-          <label>이름</label>
-          <input
-            onChange={this.handleChange("name")}
-            type="text"
-            value={name}
-          ></input>
-        </div>
+      <form>
         <div>
           <label>이메일</label>
           <input
@@ -80,27 +67,21 @@ class Signup extends Component {
             value={password}
           ></input>
         </div>
-        <button onClick={this.handleSubmit}>가입하기</button>
+        <button onClick={this.handleSubmit}>로그인</button>
       </form>
     );
   };
 
   render() {
-    const { name, email, password, error, open } = this.state;
+    const { email, password, error } = this.state;
     return (
       <div>
-        <h2>회원가입</h2>
+        <h2>로그인</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
-        <div style={{ display: open ? "" : "none" }}>
-          회원가입 성공! 로그인해주세요.
-        </div>
-        {/* 회원가입 후 아이디 표시 되도록 */}
-        {/* <div style={{ display: open ? "" : "none" }}>ID: </div>  */}
-
-        {this.signupForm(name, email, password, open)}
+        {this.signinForm(email, password)}
       </div>
     );
   }
 }
 
-export default Signup;
+export default Signin;
