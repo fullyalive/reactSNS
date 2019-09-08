@@ -7,6 +7,19 @@ const isActive = (history, path) => {
   } else return { color: "#373737" };
 };
 
+export const signout = next => {
+  if (typeof window !== "undefined") localStorage.removeItem("jwt");
+  next();
+  return fetch("http://localhost:8080/signout", {
+    method: "GET"
+  })
+    .then(response => {
+      console.log("signout", response);
+      return response.json();
+    })
+    .catch(err => console.log(err));
+};
+
 const Menu = ({ history }) => {
   return (
     <div>
@@ -19,6 +32,12 @@ const Menu = ({ history }) => {
       <Link style={isActive(history, "/signup")} to="/signup">
         회원가입
       </Link>
+      <a
+        style={(isActive(history, "/signout"), { cursor: "pointer" })}
+        onClick={() => signout(() => history.push("/"))}
+      >
+        로그아웃
+      </a>
     </div>
   );
 };
