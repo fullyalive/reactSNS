@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import Loading from "../core/Loading";
 
 class Signin extends Component {
   constructor() {
@@ -8,7 +9,8 @@ class Signin extends Component {
       email: "",
       password: "",
       error: "",
-      redirectToReferer: false
+      redirectToReferer: false,
+      loading: false
     };
   }
 
@@ -26,13 +28,14 @@ class Signin extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({ loading: true });
     const { email, password } = this.state;
     const user = {
       email,
       password
     };
     this.signin(user).then(data => {
-      if (data.error) this.setState({ error: data.error });
+      if (data.error) this.setState({ error: data.error, loading: false });
       else {
         // authenticate
         this.authenticate(data, () => {
@@ -83,7 +86,7 @@ class Signin extends Component {
   };
 
   render() {
-    const { email, password, error, redirectToReferer } = this.state;
+    const { email, password, error, redirectToReferer, loading } = this.state;
 
     if (redirectToReferer) {
       return <Redirect to="/" />; // from react-router-dom
@@ -92,6 +95,7 @@ class Signin extends Component {
       <div>
         <h2>로그인</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
+        {loading ? <Loading /> : ""}
         {this.signinForm(email, password)}
       </div>
     );
