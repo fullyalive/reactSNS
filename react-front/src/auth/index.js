@@ -1,5 +1,3 @@
-import React from "react";
-
 export const signup = user => {
   return fetch("http://localhost:8888/signup", {
     method: "POST",

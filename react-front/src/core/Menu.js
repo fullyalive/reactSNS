@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { signout, isAuthenticated} from "../auth";
+import { signout, isAuthenticated } from "../auth";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -27,7 +27,7 @@ const Menu = ({ history }) => {
       {isAuthenticated() && (
         <>
           <li>
-            <a>{isAuthenticated().user.name}</a>
+            <Link to={`/user/${isAuthenticated().user._id}`}>내정보</Link>
           </li>
           <a
             style={(isActive(history, "/signout"), { cursor: "pointer" })}
