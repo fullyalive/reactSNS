@@ -14,6 +14,9 @@ const Menu = ({ history }) => {
       <Link style={isActive(history, "/")} to="/">
         홈
       </Link>
+      <Link style={isActive(history, "/users")} to="/users">
+        Users
+      </Link>
       {!isAuthenticated() && (
         <>
           <Link style={isActive(history, "/signin")} to="/signin">
