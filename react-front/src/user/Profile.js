@@ -40,7 +40,7 @@ class Profile extends Component {
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>
         </div>
         <div>
-          {isAuthenticated().user && isAuthenticated().user._id == user._id && (
+          {isAuthenticated().user && isAuthenticated().user._id === user._id && (
             <div>
               <Link to={`/user/edit/${this.state.user_id}`}>프로필수정</Link>
               <button>회원탈퇴</button>
