@@ -27,7 +27,12 @@ const Menu = ({ history }) => {
       {isAuthenticated() && (
         <>
           <li>
-            <Link to={`/user/${isAuthenticated().user._id}`}>내정보</Link>
+            <Link
+              to={`/user/${isAuthenticated().user._id}`}
+              style={isActive(history, `/user/${isAuthenticated().user._id}`)}
+            >
+              내정보
+            </Link>
           </li>
           <a
             style={(isActive(history, "/signout"), { cursor: "pointer" })}
