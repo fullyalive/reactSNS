@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { list } from "./apiUser";
+import avatar from "../images/avatar.png";
+import { Link } from "react-router-dom";
 
 class Users extends Component {
   constructor() {
@@ -26,7 +28,9 @@ class Users extends Component {
           <div key={i}>
             <p>{user.name}</p>
             <p>{user.email}</p>
-            <a href="#">Avatar Image</a>
+            <Link to={`/user/${user._id}`}>
+              <img src={avatar} alt={user.name} />
+            </Link>
           </div>
         ))}
       </div>

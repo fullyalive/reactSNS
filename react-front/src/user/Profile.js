@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
 import { Redirect, Link } from "react-router-dom";
 import { read } from "./apiUser";
+import avatar from "../images/avatar.png";
 
 class Profile extends Component {
   constructor() {
@@ -35,6 +36,7 @@ class Profile extends Component {
       <div>
         <h2>내정보</h2>
         <div>
+          <img src={avatar} alt={user.name} />
           <p>{isAuthenticated().user.name}</p>
           <p>{isAuthenticated().user.email}</p>
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>

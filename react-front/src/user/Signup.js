@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { signup } from "../auth";
+import { Link } from "react-router-dom";
 
 class Signup extends Component {
   constructor() {
@@ -78,11 +79,10 @@ class Signup extends Component {
         <h2>회원가입</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
         <div style={{ display: open ? "" : "none" }}>
-          회원가입 성공! 로그인해주세요.
+          회원가입 성공! <Link to="/signin">로그인</Link>해주세요.
         </div>
         {/* 회원가입 후 아이디 표시 되도록 */}
         {/* <div style={{ display: open ? "" : "none" }}>ID: </div>  */}
-
         {this.signupForm(name, email, password, open)}
       </div>
     );
