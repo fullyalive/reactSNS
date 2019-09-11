@@ -19,18 +19,26 @@ class Users extends Component {
     });
   }
 
+  renderUsers = users => {
+    return (
+      <div>
+        {users.map((user, i) => (
+          <div key={i}>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <a href="#">Avatar Image</a>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   render() {
     const { users } = this.state;
     return (
       <div>
         <h2>Users</h2>
-        <div>
-          {users.map((user, i) => (
-            <div key={i}>
-              <p>{user.name}</p>
-            </div>
-          ))}
-        </div>
+        {this.renderUsers(users)}
       </div>
     );
   }
