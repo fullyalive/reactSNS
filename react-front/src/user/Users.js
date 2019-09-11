@@ -20,9 +20,17 @@ class Users extends Component {
   }
 
   render() {
+    const { users } = this.state;
     return (
       <div>
         <h2>Users</h2>
+        <div>
+          {users.map((user, i) => (
+            <div key={i}>
+              <p>{user.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

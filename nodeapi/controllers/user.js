@@ -30,7 +30,7 @@ exports.allUsers = (req, res) => {
         error: err
       });
     }
-    res.json({ users });
+    res.json(users);
   }).select("name email updated created");
 };
 
@@ -64,6 +64,6 @@ exports.deleteUser = (req, res, next) => {
         error: err
       });
     }
-    res.json({ message: "탈퇴 완료"})
+    res.json({ message: "탈퇴 완료" });
   });
 };
