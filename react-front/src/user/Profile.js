@@ -3,6 +3,7 @@ import { isAuthenticated } from "../auth";
 import { Redirect, Link } from "react-router-dom";
 import { read } from "./apiUser";
 import avatar from "../images/avatar.png";
+import DeleteUser from "./DeleteUser";
 
 class Profile extends Component {
   constructor() {
@@ -45,7 +46,7 @@ class Profile extends Component {
           {isAuthenticated().user && isAuthenticated().user._id === user._id && (
             <div>
               <Link to={`/user/edit/${this.state.user_id}`}>프로필수정</Link>
-              <button>회원탈퇴</button>
+              <DeleteUser />
             </div>
           )}
         </div>
