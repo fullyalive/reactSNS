@@ -50,7 +50,7 @@ class Profile extends Component {
         <div>
           {isAuthenticated().user && isAuthenticated().user._id === user._id && (
             <div>
-              <Link to={`/user/edit/${this.state.user_id}`}>프로필수정</Link>
+              <Link to={`/user/edit/${user._id}`}>프로필수정</Link>
               <DeleteUser userId={user._id} />
             </div>
           )}
