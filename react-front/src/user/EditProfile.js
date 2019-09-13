@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
-import { read } from "./apiUser";
+import { read, update } from "./apiUser";
+import { Redirect } from "react-router-dom";
 
 class EditProfile extends Component {
   constructor() {
@@ -8,8 +9,8 @@ class EditProfile extends Component {
     this.state = {
       id: "",
       name: "",
-      email: "",
-      password: ""
+      password: "",
+      redirectToProfile: false
     };
   }
 
@@ -17,12 +18,12 @@ class EditProfile extends Component {
     const token = isAuthenticated().token;
     read(userId, token).then(data => {
       if (data.error) {
-        this.setState({ redirectToSignin: true });
+        this.setState({ redirectToProfile: true });
       } else {
         this.setState({
           id: data._id,
           name: data.name,
-          email: data.email
+          error: ""
         });
       }
     });
@@ -39,28 +40,29 @@ class EditProfile extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name, email, password } = this.state;
+    const { name, password } = this.state;
     const user = {
       name,
-      email,
-      password
+      password: password || undefined
     };
+    const userId = this.props.match.params.userId;
+    const token = isAuthenticated().token;
+    update(userId, token, user).then(data => {
+      if (data.error) this.setState({ error: data.error });
+      else
+        this.setState({
+          redirectToProfile: true
+        });
+    });
   };
 
-  editForm = (name, email, password) => (
+  editForm = (name, password) => (
     <form>
       <div>
-        <label>Name</label>
+        <label>닉네임</label>
         <input onChange={this.handleChange("name")} type="text" value={name} />
       </div>
-      <div>
-        <label>이메일</label>
-        <input
-          onChange={this.handleChange("email")}
-          type="email"
-          value={email}
-        />
-      </div>
+
       <div>
         <label>비밀번호</label>
         <input
@@ -74,11 +76,16 @@ class EditProfile extends Component {
   );
 
   render() {
-    const { name, email, password } = this.state;
+    const { id, name, password, redirectToProfile } = this.state;
+
+    if (redirectToProfile) {
+      return <Redirect to={`/user/${id}`} />;
+    }
+
     return (
       <div>
         <h2>프로필수정</h2>
-        {this.editForm(name, email, password)}
+        {this.editForm(name, password)}
       </div>
     );
   }
