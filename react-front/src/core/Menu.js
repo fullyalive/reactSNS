@@ -37,12 +37,12 @@ const Menu = ({ history }) => {
               내정보
             </Link>
           </li>
-          <a
+          <span
             style={(isActive(history, "/signout"), { cursor: "pointer" })}
             onClick={() => signout(() => history.push("/"))}
           >
             로그아웃
-          </a>
+          </span>
         </>
       )}
     </div>

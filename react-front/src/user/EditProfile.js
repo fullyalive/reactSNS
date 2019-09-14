@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
 import { read, update } from "./apiUser";
 import { Redirect } from "react-router-dom";
+import Loading from "../core/Loading";
 
 class EditProfile extends Component {
   constructor() {
@@ -11,6 +12,8 @@ class EditProfile extends Component {
       name: "",
       password: "",
       error: "",
+      fileSize: 0,
+      loading: false,
       redirectToProfile: false
     };
   }
@@ -37,8 +40,8 @@ class EditProfile extends Component {
   }
 
   isValid = () => {
-    const { name, email, password } = this.state;
-    if (name.length == 0) {
+    const { name, password, fileSize } = this.state;
+    if (name.length === 0) {
       this.setState({ error: "닉네임을 입력해주세요" });
       return false;
     }
@@ -46,24 +49,26 @@ class EditProfile extends Component {
       this.setState({ error: "비밀번호는 6글자 이상이어야 합니다." });
       return false;
     }
+    if (fileSize > 1000000) {
+      this.setState({ error: "1MB 이하의 이미지만 업로드 가능합니다." });
+      return false;
+    }
     // 중복 닉네임 방지
     return true;
   };
 
   handleChange = name => event => {
+    this.setState({ error: "" });
     const value = name === "photo" ? event.target.files[0] : event.target.value;
+    const fileSize = name === "photo" ? event.target.files[0].size : 0;
     this.userData.set(name, value);
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, fileSize });
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({ loading: true });
     if (this.isValid()) {
-      const { name, password } = this.state;
-      const user = {
-        name,
-        password: password || undefined
-      };
       const userId = this.props.match.params.userId;
       const token = isAuthenticated().token;
       update(userId, token, this.userData).then(data => {
@@ -104,7 +109,14 @@ class EditProfile extends Component {
   );
 
   render() {
-    const { id, name, password, error, redirectToProfile } = this.state;
+    const {
+      id,
+      name,
+      password,
+      error,
+      loading,
+      redirectToProfile
+    } = this.state;
 
     if (redirectToProfile) {
       return <Redirect to={`/user/${id}`} />;
@@ -112,6 +124,7 @@ class EditProfile extends Component {
 
     return (
       <div>
+        {loading ? <Loading /> : ""}
         <h2>프로필수정</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
         {this.editForm(name, password)}
