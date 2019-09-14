@@ -43,8 +43,8 @@ class Profile extends Component {
         <h2>내정보</h2>
         <div>
           <img src={avatar} alt={user.name} />
-          <p>{isAuthenticated().user.name}</p>
-          <p>{isAuthenticated().user.email}</p>
+          <p>{user.name}</p>
+          <p>{user.email}</p>
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>
         </div>
         <div>
