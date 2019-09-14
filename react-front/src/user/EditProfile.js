@@ -10,6 +10,7 @@ class EditProfile extends Component {
       id: "",
       name: "",
       password: "",
+      error: "",
       redirectToProfile: false
     };
   }
@@ -34,26 +35,42 @@ class EditProfile extends Component {
     this.init(userId);
   }
 
+  isValid = () => {
+    const { name, email, password } = this.state;
+    if (name.length == 0) {
+      this.setState({ error: "닉네임을 입력해주세요" });
+      return false;
+    }
+    if (password.length >= 1 && password.elgnth <= 5) {
+      this.setState({ error: "비밀번호는 6글자 이상이어야 합니다." });
+      return false;
+    }
+    // 중복 닉네임 방지
+    return true;
+  };
+
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    const { name, password } = this.state;
-    const user = {
-      name,
-      password: password || undefined
-    };
-    const userId = this.props.match.params.userId;
-    const token = isAuthenticated().token;
-    update(userId, token, user).then(data => {
-      if (data.error) this.setState({ error: data.error });
-      else
-        this.setState({
-          redirectToProfile: true
-        });
-    });
+    if (this.isValid()) {
+      const { name, password } = this.state;
+      const user = {
+        name,
+        password: password || undefined
+      };
+      const userId = this.props.match.params.userId;
+      const token = isAuthenticated().token;
+      update(userId, token, user).then(data => {
+        if (data.error) this.setState({ error: data.error });
+        else
+          this.setState({
+            redirectToProfile: true
+          });
+      });
+    }
   };
 
   editForm = (name, password) => (
@@ -76,7 +93,7 @@ class EditProfile extends Component {
   );
 
   render() {
-    const { id, name, password, redirectToProfile } = this.state;
+    const { id, name, password, error, redirectToProfile } = this.state;
 
     if (redirectToProfile) {
       return <Redirect to={`/user/${id}`} />;
@@ -85,6 +102,7 @@ class EditProfile extends Component {
     return (
       <div>
         <h2>프로필수정</h2>
+        <div style={{ display: error ? "" : "none" }}>{error}</div>
         {this.editForm(name, password)}
       </div>
     );
