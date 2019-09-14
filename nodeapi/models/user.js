@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  photo: {
+    data: Buffer,
+    contentType: String
+  },
   hashed_password: {
     type: String,
     required: true
