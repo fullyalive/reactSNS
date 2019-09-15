@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
 import { Redirect, Link } from "react-router-dom";
 import { read } from "./apiUser";
-import avatar from "../images/avatar.png";
+import Avatar from "../images/avatar.png";
 import DeleteUser from "./DeleteUser";
 
 class Profile extends Component {
@@ -42,7 +42,7 @@ class Profile extends Component {
       <div>
         <h2>내정보</h2>
         <div>
-          <img src={avatar} alt={user.name} />
+          <img src={Avatar} alt={user.name} />
           <p>{user.name}</p>
           <p>{user.email}</p>
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>

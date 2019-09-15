@@ -3,6 +3,7 @@ import { isAuthenticated } from "../auth";
 import { read, update } from "./apiUser";
 import { Redirect } from "react-router-dom";
 import Loading from "../core/Loading";
+import Avatar from "../images/avatar.png";
 
 class EditProfile extends Component {
   constructor() {
@@ -121,12 +122,16 @@ class EditProfile extends Component {
     if (redirectToProfile) {
       return <Redirect to={`/user/${id}`} />;
     }
+    const photoUrl = id
+      ? `${process.env.REACT_APP_API_URL}/use/photo/${id}`
+      : Avatar;
 
     return (
       <div>
         {loading ? <Loading /> : ""}
         <h2>프로필수정</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
+        <img src={photoUrl} alt={name} />
         {this.editForm(name, password)}
       </div>
     );
