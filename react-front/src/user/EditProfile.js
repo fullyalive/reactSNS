@@ -11,6 +11,7 @@ class EditProfile extends Component {
     this.state = {
       id: "",
       name: "",
+      bio: "",
       password: "",
       error: "",
       fileSize: 0,
@@ -28,6 +29,7 @@ class EditProfile extends Component {
         this.setState({
           id: data._id,
           name: data.name,
+          bio: data.bio,
           error: ""
         });
       }
@@ -82,7 +84,7 @@ class EditProfile extends Component {
     }
   };
 
-  editForm = (name, password, photo) => (
+  editForm = (name, bio, password) => (
     <form>
       <div>
         <label>프로필사진</label>
@@ -90,12 +92,19 @@ class EditProfile extends Component {
           onChange={this.handleChange("photo")}
           type="file"
           accept="image/*"
-          value={photo}
         />
       </div>
       <div>
         <label>닉네임</label>
         <input onChange={this.handleChange("name")} type="text" value={name} />
+      </div>
+      <div>
+        <label>자기소개</label>
+        <textarea
+          onChange={this.handleChange("bio")}
+          type="text"
+          value={bio}
+        />
       </div>
       <div>
         <label>비밀번호</label>
@@ -113,6 +122,7 @@ class EditProfile extends Component {
     const {
       id,
       name,
+      bio,
       password,
       error,
       loading,
@@ -138,7 +148,7 @@ class EditProfile extends Component {
           onError={i => (i.target.src = `${Avatar}`)}
           alt={name}
         />
-        {this.editForm(name, password)}
+        {this.editForm(name, bio, password)}
       </div>
     );
   }

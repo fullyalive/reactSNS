@@ -54,6 +54,7 @@ class Profile extends Component {
           />
           <p>{user.name}</p>
           <p>{user.email}</p>
+          <p>{user.bio}</p>
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>
         </div>
         <div>
