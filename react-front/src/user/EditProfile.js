@@ -123,7 +123,9 @@ class EditProfile extends Component {
       return <Redirect to={`/user/${id}`} />;
     }
     const photoUrl = id
-      ? `${process.env.REACT_APP_API_URL}/user/photo/${id}`
+      ? `${
+          process.env.REACT_APP_API_URL
+        }/user/photo/${id}?${new Date().getTime()}`
       : Avatar;
 
     return (
@@ -131,7 +133,11 @@ class EditProfile extends Component {
         {loading ? <Loading /> : ""}
         <h2>프로필수정</h2>
         <div style={{ display: error ? "" : "none" }}>{error}</div>
-        <img src={photoUrl} alt={name} />
+        <img
+          src={photoUrl}
+          onError={i => (i.target.src = `${Avatar}`)}
+          alt={name}
+        />
         {this.editForm(name, password)}
       </div>
     );
