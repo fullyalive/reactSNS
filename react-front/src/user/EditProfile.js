@@ -123,7 +123,7 @@ class EditProfile extends Component {
       return <Redirect to={`/user/${id}`} />;
     }
     const photoUrl = id
-      ? `${process.env.REACT_APP_API_URL}/use/photo/${id}`
+      ? `${process.env.REACT_APP_API_URL}/user/photo/${id}`
       : Avatar;
 
     return (
