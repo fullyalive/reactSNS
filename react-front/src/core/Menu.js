@@ -34,7 +34,7 @@ const Menu = ({ history }) => {
               to={`/user/${isAuthenticated().user._id}`}
               style={isActive(history, `/user/${isAuthenticated().user._id}`)}
             >
-              내정보
+              {`내정보 | ${isAuthenticated().user.name}`}
             </Link>
           </li>
           <span

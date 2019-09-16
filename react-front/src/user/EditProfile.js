@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
-import { read, update } from "./apiUser";
+import { read, update, updateUser } from "./apiUser";
 import { Redirect } from "react-router-dom";
 import Loading from "../core/Loading";
 import Avatar from "../images/avatar.png";
@@ -45,15 +45,21 @@ class EditProfile extends Component {
   isValid = () => {
     const { name, password, fileSize } = this.state;
     if (name.length === 0) {
-      this.setState({ error: "닉네임을 입력해주세요" });
+      this.setState({ error: "닉네임을 입력해주세요", loading: false });
       return false;
     }
     if (password.length >= 1 && password.elgnth <= 5) {
-      this.setState({ error: "비밀번호는 6글자 이상이어야 합니다." });
+      this.setState({
+        error: "비밀번호는 6글자 이상이어야 합니다.",
+        loading: false
+      });
       return false;
     }
     if (fileSize > 1000000) {
-      this.setState({ error: "1MB 이하의 이미지만 업로드 가능합니다." });
+      this.setState({
+        error: "1MB 이하의 이미지만 업로드 가능합니다.",
+        loading: false
+      });
       return false;
     }
     // 중복 닉네임 방지
@@ -77,9 +83,14 @@ class EditProfile extends Component {
       update(userId, token, this.userData).then(data => {
         if (data.error) this.setState({ error: data.error });
         else
-          this.setState({
-            redirectToProfile: true
+          updateUser(data, () => {
+            this.setState({
+              redirectToProfile: true
+            });
           });
+        this.setState({
+          redirectToProfile: true
+        });
       });
     }
   };
@@ -100,11 +111,7 @@ class EditProfile extends Component {
       </div>
       <div>
         <label>자기소개</label>
-        <textarea
-          onChange={this.handleChange("bio")}
-          type="text"
-          value={bio}
-        />
+        <textarea onChange={this.handleChange("bio")} type="text" value={bio} />
       </div>
       <div>
         <label>비밀번호</label>
