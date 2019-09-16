@@ -4,6 +4,7 @@ import { Redirect, Link } from "react-router-dom";
 import { read } from "./apiUser";
 import Avatar from "../images/avatar.png";
 import DeleteUser from "./DeleteUser";
+import FollowProfileButton from "./FollowProfileButton";
 
 class Profile extends Component {
   constructor() {
@@ -58,11 +59,13 @@ class Profile extends Component {
           <p>{`가입일 ${new Date(this.state.user.created).toDateString()}`}</p>
         </div>
         <div>
-          {isAuthenticated().user && isAuthenticated().user._id === user._id && (
+          {isAuthenticated().user && isAuthenticated().user._id === user._id ? (
             <div>
               <Link to={`/user/edit/${user._id}`}>프로필수정</Link>
               <DeleteUser userId={user._id} />
             </div>
+          ) : (
+            <FollowProfileButton />
           )}
         </div>
       </div>
