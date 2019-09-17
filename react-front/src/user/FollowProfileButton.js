@@ -1,17 +1,21 @@
 import React, { Component } from "react";
-import { follow } from "./apiUser";
+import { follow, unfollow } from "./apiUser";
 
 class FollowProfileButton extends Component {
   followClick = () => {
-    this.props.onButtonClick(follow)
-  }
+    this.props.onButtonClick(follow);
+  };
+  unfollowClick = () => {
+    this.props.onButtonClick(unfollow);
+  };
+
   render() {
     return (
       <div>
         {!this.props.following ? (
           <button onClick={this.followClick}>Follow</button>
         ) : (
-          <button>Unfollow</button>
+          <button onClick={this.unfollowClick}>Unfollow</button>
         )}
       </div>
     );
