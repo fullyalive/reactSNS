@@ -4,8 +4,11 @@ class FollowProfileButton extends Component {
   render() {
     return (
       <div>
-        <button>Follow</button>
-        <button>Unfollow</button>
+        {!this.props.following ? (
+          <button>Follow</button>
+        ) : (
+          <button>Unfollow</button>
+        )}
       </div>
     );
   }
