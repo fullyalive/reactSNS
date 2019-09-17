@@ -12,7 +12,8 @@ class Profile extends Component {
     this.state = {
       user: { following: [], followers: [] },
       redirectToSignin: false,
-      following: false
+      following: false,
+      error: ""
     };
   }
 
@@ -24,6 +25,18 @@ class Profile extends Component {
       return follower._id === jwt.user._id;
     });
     return match;
+  };
+
+  clickFollowButton = callApi => {
+    const userId = isAuthenticated().user._id;
+    const token = isAuthenticated().token;
+    callApi(userId, token, this.state.user._id).then(data => {
+      if (data.error) {
+        this.setState({ error: data.error });
+      } else {
+        this.setState({ user: data, following: !this.state.following });
+      }
+    });
   };
 
   init = userId => {
@@ -54,7 +67,7 @@ class Profile extends Component {
     const photoUrl = user._id
       ? `${process.env.REACT_APP_API_URL}/user/photo/${
           user._id
-        }?${new Date().getTime()}}`
+        }?${new Date().getTime()}`
       : Avatar;
     return (
       <div>
@@ -77,7 +90,10 @@ class Profile extends Component {
               <DeleteUser userId={user._id} />
             </div>
           ) : (
-            <FollowProfileButton following={this.state.following} />
+            <FollowProfileButton
+              following={this.state.following}
+              onButtonClick={this.clickFollowButton}
+            />
           )}
         </div>
       </div>
