@@ -31,6 +31,14 @@ const Menu = ({ history }) => {
         <>
           <li>
             <Link
+              to={`/findpeople`}
+              style={isActive(history, "/findpeople")}
+            >
+              유저찾기
+            </Link>
+          </li>
+          <li>
+            <Link
               to={`/user/${isAuthenticated().user._id}`}
               style={isActive(history, `/user/${isAuthenticated().user._id}`)}
             >
