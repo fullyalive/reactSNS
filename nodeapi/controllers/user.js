@@ -113,7 +113,7 @@ exports.deleteUser = (req, res, next) => {
   });
 };
 
-// follow 
+// follow
 exports.addFollowing = (req, res, next) => {
   User.findByIdAndUpdate(
     req.body.userId,
@@ -187,4 +187,17 @@ exports.removeFollower = (req, res) => {
       result.salt = undefined;
       res.json(result);
     });
+};
+
+exports.findPeople = (req, res) => {
+  let following = req.profile.following;
+  following.push(req.profile._id);
+  User.find({ _id: { $nin: following } }, (err, users) => {
+    if (err) {
+      return res.status(400).json({
+        error: err
+      });
+    }
+    res.json(users);
+  }).select("name");
 };
