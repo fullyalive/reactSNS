@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { findPeople } from "./apiUser";
+import { findPeople, follow } from "./apiUser";
 import Avatar from "../images/avatar.png";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
@@ -8,7 +8,9 @@ class FindPeople extends Component {
   constructor() {
     super();
     this.state = {
-      users: []
+      users: [],
+      error: "",
+      open: false
     };
   }
 
@@ -24,6 +26,24 @@ class FindPeople extends Component {
     });
   }
 
+  clickFollow = (user, i) => {
+    const userId = isAuthenticated().user._id;
+    const token = isAuthenticated().token;
+
+    follow(userId, token, user._id).then(data => {
+      if (data.error) {
+        this.setState({ error: data.error });
+      } else {
+        let toFollow = this.state.users;
+        toFollow.splicee(i, 1);
+        this.setState({
+          users: toFollow,
+          open: true,
+          followMessage: `${user.name} 팔로우 했습니다.`
+        });
+      }
+    });
+  };
   renderUsers = users => {
     return (
       <div>
@@ -38,6 +58,7 @@ class FindPeople extends Component {
                 alt={user.name}
               />
             </Link>
+            <button onCick={() => this.clickFollow(user, i)}>Follow</button>
           </div>
         ))}
       </div>
@@ -45,10 +66,15 @@ class FindPeople extends Component {
   };
 
   render() {
-    const { users } = this.state;
+    const { users, open, followMessage } = this.state;
     return (
       <div>
         <h2>유저찾기</h2>
+        {open && (
+          <div>
+            <p>{followMessage}</p>
+          </div>
+        )}
         {this.renderUsers(users)}
       </div>
     );
