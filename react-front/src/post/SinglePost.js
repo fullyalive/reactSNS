@@ -24,8 +24,10 @@ class SinglePost extends Component {
   renderPost = post => {
     const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
     const posterName = post.postedBy ? post.postedBy.name : " Unknown";
+
     return (
       <div>
+        <h2>{post.title}</h2>
         <img
           src={`${process.env.REACT_API_URL}/post/photo/${post._id}`}
           alt={post.title}
@@ -51,14 +53,7 @@ class SinglePost extends Component {
 
   render() {
     const { post } = this.state;
-    return (
-      <div>
-        {console.log(111, post)}
-        {!post ? <Loading /> : ""}
-        <h2>{post.title}</h2>
-        {this.renderPost(post)}
-      </div>
-    );
+    return <div>{!post ? <Loading /> : this.renderPost(post)}</div>;
   }
 }
 

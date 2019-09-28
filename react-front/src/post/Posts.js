@@ -40,7 +40,7 @@ class Posts extends Component {
               />
               <br />
               <p>
-                by <Link to={posterId}>{posterName}</Link>
+                by <Link to={`${posterId}`}>{posterName}</Link>
               </p>
               <Link to={`/post/${post._id}`}>더보기</Link>
               on {new Date(post.created).toDateString()}
