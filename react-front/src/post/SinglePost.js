@@ -3,6 +3,7 @@ import { singlePost } from "./apiPost";
 import Loading from "../core/Loading";
 // import DefaultPost from "../images/defaultPost.png";
 import { Link } from "react-router-dom";
+import { isAuthenticated } from "../auth";
 
 class SinglePost extends Component {
   state = {
@@ -25,18 +26,25 @@ class SinglePost extends Component {
     const posterName = post.postedBy ? post.postedBy.name : " Unknown";
     return (
       <div>
-        <p>{post.body}</p>
         <img
           src={`${process.env.REACT_API_URL}/post/photo/${post._id}`}
           alt={post.title}
           // onError={i => i.target.src = `${DefaultPost}`}
         />
+        <p>{post.body}</p>
         <br />
         <p>
-          by <Link to={posterId}>{posterName}</Link>
+          by <Link to={`${posterId}`}>{posterName}</Link>
         </p>
-        <Link to={`/`}>목록</Link>
         on {new Date(post.created).toDateString()}
+        {isAuthenticated().user &&
+          isAuthenticated().user._id === post.postedBy._id && (
+            <div>
+              <button>수정</button>
+              <button>삭제</button>
+            </div>
+          )}
+        <Link to={`/`}>목록</Link>
       </div>
     );
   };
@@ -45,6 +53,7 @@ class SinglePost extends Component {
     const { post } = this.state;
     return (
       <div>
+        {console.log(111, post)}
         {!post ? <Loading /> : ""}
         <h2>{post.title}</h2>
         {this.renderPost(post)}
