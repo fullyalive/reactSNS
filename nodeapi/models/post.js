@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema({
   photo: {
     data: Buffer, // some sort of space allocated by the nodeJS code to give a bit of a space
     contentType: String
-  }, 
+  },
   postedBy: {
     type: ObjectId,
     ref: "User"
@@ -21,7 +21,8 @@ const postSchema = new mongoose.Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  updated: Date
 });
 
 module.exports = mongoose.model("Post", postSchema);
