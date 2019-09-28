@@ -51,7 +51,24 @@ class ProfileTabs extends Component {
         </div>
         <div>
           <div>posts</div>
-          {JSON.stringify(posts)}
+          <div>
+            {posts.map((post, i) => {
+              return (
+                <div key={i}>
+                  <div>
+                    <Link to={`/post/${post._id}`}>
+                      <img
+                        src={`${process.env.REACT_API_URL}/post/photo/${post._id}`}
+                        alt={post.title}
+                        // onError={i => i.target.src = `${DefaultPost}`}
+                      />
+                      {post.title}
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

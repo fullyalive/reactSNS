@@ -3,7 +3,6 @@ import { isAuthenticated } from "../auth";
 import { create } from "./apiPost";
 import { Redirect } from "react-router-dom";
 import Loading from "../core/Loading";
-import Avatar from "../images/avatar.png";
 
 class NewPost extends Component {
   constructor() {
