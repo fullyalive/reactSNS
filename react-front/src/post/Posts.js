@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { list } from "./apiPost";
-// import Avatar from "../images/avatar.png";
+// import DefaultPost from "../images/defaultPost.png";
 import { Link } from "react-router-dom";
 
 class Posts extends Component {
@@ -32,6 +32,11 @@ class Posts extends Component {
             <div key={i}>
               <p>{post.title}</p>
               <p>{post.body.substring(0, 50)}...</p>
+              <img
+                src={`${process.env.REACT_API_URL}/post/photo/${post._id}`}
+                alt={post.title}
+                // onError={i => i.target.src = `${DefaultPost}`}
+              />
               <br />
               <p>
                 by <Link to={posterId}>{posterName}</Link>
