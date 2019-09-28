@@ -63,7 +63,7 @@ class SinglePost extends Component {
         {isAuthenticated().user &&
           isAuthenticated().user._id === post.postedBy._id && (
             <div>
-              <button>수정</button>
+              <Link to={`/post/edit/${post._id}`} >수정</Link>
               <button onClick={this.deleteConfirmed}>삭제</button>
             </div>
           )}

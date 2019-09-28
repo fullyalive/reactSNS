@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import PrivateRoute from "./auth/PrivateRoute";
 import Home from "./core/Home";
 import Menu from "./core/Menu";
 import Signup from "./user/Signup";
@@ -8,9 +9,9 @@ import Profile from "./user/Profile";
 import Users from "./user/Users";
 import EditProfile from "./user/EditProfile";
 import FindPeople from "./user/FindPeople";
-import NewPost from "./post/NewPost";
 import SinglePost from "./post/SinglePost";
-import PrivateRoute from "./auth/PrivateRoute";
+import NewPost from "./post/NewPost";
+import EditPost from "./post/EditPost";
 
 const MainRouter = () => (
   <div>
@@ -19,6 +20,7 @@ const MainRouter = () => (
       <Route exact path="/" component={Home} />
       <PrivateRoute exact path="/post/create" component={NewPost} />
       <Route exact path="/post/:postId" component={SinglePost} />
+      <PrivateRoute exact path="/post/edit/:postId" component={EditPost} />
       <Route exact path="/users" component={Users} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/signin" component={Signin} />
