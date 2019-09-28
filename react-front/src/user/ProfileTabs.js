@@ -4,7 +4,7 @@ import Avatar from "../images/avatar.png";
 
 class ProfileTabs extends Component {
   render() {
-    const { following, followers } = this.props;
+    const { following, followers, posts } = this.props;
     return (
       <div>
         <div>
@@ -50,7 +50,8 @@ class ProfileTabs extends Component {
           })}
         </div>
         <div>
-            posts
+          <div>posts</div>
+          {JSON.stringify(posts)}
         </div>
       </div>
     );

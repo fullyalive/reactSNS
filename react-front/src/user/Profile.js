@@ -6,6 +6,7 @@ import Avatar from "../images/avatar.png";
 import DeleteUser from "./DeleteUser";
 import FollowProfileButton from "./FollowProfileButton";
 import ProfileTabs from "./ProfileTabs";
+import { listByUser } from "../post/apiPost";
 
 class Profile extends Component {
   constructor() {
@@ -14,7 +15,8 @@ class Profile extends Component {
       user: { following: [], followers: [] },
       redirectToSignin: false,
       following: false,
-      error: ""
+      error: "",
+      posts: []
     };
   }
 
@@ -40,6 +42,17 @@ class Profile extends Component {
     });
   };
 
+  loadPosts = userId => {
+    const token = isAuthenticated().token;
+    listByUser(userId, token).then(data => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        this.setState({ posts: data });
+      }
+    });
+  };
+
   init = userId => {
     const token = isAuthenticated().token;
     read(userId, token).then(data => {
@@ -48,6 +61,7 @@ class Profile extends Component {
       } else {
         let following = this.checkFollow(data);
         this.setState({ user: data, following });
+        this.loadPosts(data._id);
       }
     });
   };
@@ -63,7 +77,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { redirectToSignin, user } = this.state;
+    const { redirectToSignin, user, posts } = this.state;
     if (redirectToSignin) return <Redirect to="/signin" />;
     const photoUrl = user._id
       ? `${process.env.REACT_APP_API_URL}/user/photo/${
@@ -97,7 +111,11 @@ class Profile extends Component {
             />
           )}
         </div>
-        <ProfileTabs followers={user.followers} following={user.following} />
+        <ProfileTabs
+          followers={user.followers}
+          following={user.following}
+          posts={posts}
+        />
       </div>
     );
   }
