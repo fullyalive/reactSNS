@@ -24,13 +24,23 @@ class Posts extends Component {
   renderPosts = posts => {
     return (
       <div>
-        {posts.map((post, i) => (
-          <div key={i}>
-            <p>{post.title}</p>
-            <p>{post.body}</p>
-            <Link to={`/post/${post._id}`}>더보기</Link>
-          </div>
-        ))}
+        {posts.map((post, i) => {
+          const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
+          const posterName = post.postedBy ? post.postedBy.name : " Unknown";
+
+          return (
+            <div key={i}>
+              <p>{post.title}</p>
+              <p>{post.body.substring(0, 50)}...</p>
+              <br />
+              <p>
+                by <Link to={posterId}>{posterName}</Link>
+              </p>
+              <Link to={`/post/${post._id}`}>더보기</Link>
+              on {new Date(post.created).toDateString()}
+            </div>
+          );
+        })}
       </div>
     );
   };

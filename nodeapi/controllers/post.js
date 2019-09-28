@@ -21,6 +21,7 @@ exports.getPosts = (req, res) => {
   const posts = Post.find()
     .populate("postedBy", "_id name")
     .select("_id title body") // 보여주고자 하는 field
+    .sort({ created: -1 })
     .then(posts => {
       res.json(posts);
     })
@@ -95,7 +96,7 @@ exports.updatePost = (req, res, next) => {
         error: err
       });
     }
-    res.json(post);         
+    res.json(post);
   });
 };
 
