@@ -86,6 +86,10 @@ exports.isPoster = (req, res, next) => {
   next();
 };
 
+exports.singlePost = (req, res) => {
+  return res.json(req.post);
+};
+
 exports.updatePost = (req, res, next) => {
   let post = req.post;
   post = _.extend(post, req.body);
