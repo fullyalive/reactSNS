@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { singlePost } from "./apiPost";
+import Loading from "../core/Loading";
 // import DefaultPost from "../images/defaultPost.png";
 import { Link } from "react-router-dom";
 
@@ -44,6 +45,7 @@ class SinglePost extends Component {
     const { post } = this.state;
     return (
       <div>
+        {!post ? <Loading /> : ""}
         <h2>{post.title}</h2>
         {this.renderPost(post)}
       </div>
