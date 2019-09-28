@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { singlePost } from "./apiPost";
+import { singlePost, remove } from "./apiPost";
 import Loading from "../core/Loading";
 // import DefaultPost from "../images/defaultPost.png";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 
 class SinglePost extends Component {
   state = {
-    post: ""
+    post: "",
+    deleted: false,
+    redirectToHome: false
   };
 
   componentDidMount = () => {
@@ -19,6 +21,25 @@ class SinglePost extends Component {
         this.setState({ post: data });
       }
     });
+  };
+
+  deletePost = () => {
+    const postId = this.props.match.params.postId;
+    const token = isAuthenticated().token;
+    remove(postId, token).then(data => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        this.setState({ redirectToHome: true });
+      }
+    });
+  };
+
+  deleteConfirmed = () => {
+    let answer = window.confirm("정말로 삭제하시겠습니까?");
+    if (answer) {
+      this.deletePost();
+    }
   };
 
   renderPost = post => {
@@ -43,7 +64,7 @@ class SinglePost extends Component {
           isAuthenticated().user._id === post.postedBy._id && (
             <div>
               <button>수정</button>
-              <button>삭제</button>
+              <button onClick={this.deleteConfirmed}>삭제</button>
             </div>
           )}
         <Link to={`/`}>목록</Link>
@@ -52,7 +73,10 @@ class SinglePost extends Component {
   };
 
   render() {
-    const { post } = this.state;
+    const { post, redirectToHome } = this.state;
+    if (redirectToHome) {
+      return <Redirect to={"/"} />;
+    }
     return <div>{!post ? <Loading /> : this.renderPost(post)}</div>;
   }
 }
