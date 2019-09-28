@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { singlePost, update } from "./apiPost";
 import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
+import Loading from "../core/Loading"
+// import DefaultPost from "../images/defaultPost.png";
 
 class EditPost extends Component {
   constructor() {
@@ -37,12 +39,36 @@ class EditPost extends Component {
     this.init(postId);
   }
 
-  handleChange = name => event => {
+  isValid = () => {
+    const { title, body, fileSize } = this.state;
+    if (title.length === 0) {
+      this.setState({ error: "제목을 입력해주세요.", loading: false });
+      return false;
+    }
+    if (body.length === 0) {
+      this.setState({
+        error: "본문을 작성해주세요.",
+        loading: false
+      });
+      return false;
+    }
+    if (fileSize > 1000000) {
+      this.setState({
+        error: "1MB 이하의 이미지만 업로드 가능합니다.",
+        loading: false
+      });
+      return false;
+    }
+    // 중복 닉네임 방지
+    return true;
+  };
+
+  handleChange = title => event => {
     this.setState({ error: "" });
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    const fileSize = name === "photo" ? event.target.files[0].size : 0;
-    this.postData.set(name, value);
-    this.setState({ [name]: value, fileSize });
+    const value = title === "photo" ? event.target.files[0] : event.target.value;
+    const fileSize = title === "photo" ? event.target.files[0].size : 0;
+    this.postData.set(title, value);
+    this.setState({ [title]: value, fileSize });
   };
 
   handleSubmit = event => {
@@ -99,7 +125,7 @@ class EditPost extends Component {
   );
 
   render() {
-    const { title, body, redirectToProfile } = this.state;
+    const { id, title, body, error, loading, redirectToProfile } = this.state;
 
     if (redirectToProfile) {
       return <Redirect to={`/user/${isAuthenticated().user._id}`} />;
@@ -107,8 +133,18 @@ class EditPost extends Component {
 
     return (
       <div>
-        {JSON.stringify(this.state)}
+        {loading ? <Loading /> : ""}
+        <div style={{ display: error ? "" : "none" }}>{error}</div>
         {this.editPostForm(title, body)}
+        <img
+          src={`${
+            process.env.REACT_APP_API_URL
+          }/post/photo/${id}?${new Date().getTime()}`}
+          // onError={i => {
+          //   i.target.src = `${DefaultPost}`;
+          // }}
+          alt={title}
+        />
       </div>
     );
   }
