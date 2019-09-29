@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { singlePost, remove } from "./apiPost";
+import { singlePost, remove, like, unlike } from "./apiPost";
 import Loading from "../core/Loading";
 // import DefaultPost from "../images/defaultPost.png";
 import { Link, Redirect } from "react-router-dom";
@@ -9,7 +9,15 @@ class SinglePost extends Component {
   state = {
     post: "",
     deleted: false,
-    redirectToHome: false
+    redirectToHome: false,
+    like: false,
+    likes: 0
+  };
+
+  checkLike = likes => {
+    const userId = isAuthenticated().user._id;
+    let match = likes.indexOf(userId) !== -1;
+    return match;
   };
 
   componentDidMount = () => {
@@ -18,7 +26,29 @@ class SinglePost extends Component {
       if (data.error) {
         console.log(data.error);
       } else {
-        this.setState({ post: data });
+        this.setState({
+          post: data,
+          likes: data.likes.length,
+          like: this.checkLike(data.likes)
+        });
+      }
+    });
+  };
+
+  likeToggle = () => {
+    let callApi = this.state.like ? unlike : like;
+    const userId = isAuthenticated().user._id;
+    const postId = this.state.post._id;
+    const token = isAuthenticated().token;
+
+    callApi(userId, token, postId).then(data => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        this.setState({
+          like: !this.state.like,
+          likes: data.likes.length
+        });
       }
     });
   };
@@ -45,6 +75,7 @@ class SinglePost extends Component {
   renderPost = post => {
     const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
     const posterName = post.postedBy ? post.postedBy.name : " Unknown";
+    const { like, likes } = this.state;
 
     return (
       <div>
@@ -54,6 +85,9 @@ class SinglePost extends Component {
           alt={post.title}
           // onError={i => i.target.src = `${DefaultPost}`}
         />
+        <div onClick={this.likeToggle}>
+          {likes === 1 ? `${likes} Like` : `${likes} Likes`}
+        </div>
         <p>{post.body}</p>
         <br />
         <p>
@@ -63,7 +97,7 @@ class SinglePost extends Component {
         {isAuthenticated().user &&
           isAuthenticated().user._id === post.postedBy._id && (
             <div>
-              <Link to={`/post/edit/${post._id}`} >수정</Link>
+              <Link to={`/post/edit/${post._id}`}>수정</Link>
               <button onClick={this.deleteConfirmed}>삭제</button>
             </div>
           )}
