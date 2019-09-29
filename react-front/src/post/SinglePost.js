@@ -85,9 +85,15 @@ class SinglePost extends Component {
           alt={post.title}
           // onError={i => i.target.src = `${DefaultPost}`}
         />
-        <div onClick={this.likeToggle}>
-          {likes === 1 ? `${likes} Like` : `${likes} Likes`}
-        </div>
+        {like ? (
+          <div onClick={this.likeToggle} className="fa fa-heart">
+            {likes === 1 ? `${likes} Like` : `${likes} Likes`}
+          </div>
+        ) : (
+          <div onClick={this.likeToggle} className="fa fa-heart-o">
+            {likes === 1 ? `${likes} Like` : `${likes} Likes`}
+          </div>
+        )}
         <p>{post.body}</p>
         <br />
         <p>
