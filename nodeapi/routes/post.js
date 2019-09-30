@@ -6,11 +6,13 @@ const {
   postById,
   isPoster,
   singlePost,
-  updatePost, 
+  updatePost,
   deletePost,
   photo,
   like,
-  unlike
+  unlike,
+  comment,
+  uncomment
 } = require("../controllers/post");
 const { requireSignin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -24,6 +26,10 @@ router.get("/posts", getPosts);
 router.put("/post/like", requireSignin, like);
 router.put("/post/unlike", requireSignin, unlike);
 
+// comments
+router.put("/post/comment", requireSignin, comment);
+router.put("/post/uncomment", requireSignin, uncomment);
+
 router.post(
   "/post/new/:userId",
   requireSignin,
@@ -31,7 +37,7 @@ router.post(
   createPostValidator
 );
 router.get("/posts/:userId", requireSignin, postsByUser);
-router.get("/post/:postId", singlePost)
+router.get("/post/:postId", singlePost);
 router.put("/post/:postId", requireSignin, isPoster, updatePost);
 router.delete("/post/:postId", requireSignin, isPoster, deletePost);
 
