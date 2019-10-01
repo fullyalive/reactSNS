@@ -4,6 +4,7 @@ import Loading from "../core/Loading";
 // import DefaultPost from "../images/defaultPost.png";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
+import Comment from "./Comment";
 
 class SinglePost extends Component {
   state = {
@@ -12,7 +13,8 @@ class SinglePost extends Component {
     redirectToHome: false,
     redirectToSignin: false,
     like: false,
-    likes: 0
+    likes: 0,
+    comments: []
   };
 
   checkLike = likes => {
@@ -84,6 +86,10 @@ class SinglePost extends Component {
     }
   };
 
+  updateComments = comments => {
+    this.setState({ comments: comments });
+  };
+
   renderPost = post => {
     const posterId = post.postedBy ? `/user/${post.postedBy._id}` : "";
     const posterName = post.postedBy ? post.postedBy.name : " Unknown";
@@ -125,13 +131,22 @@ class SinglePost extends Component {
   };
 
   render() {
-    const { post, redirectToHome, redirectToSignin } = this.state;
+    const { post, redirectToHome, redirectToSignin, comments } = this.state;
     if (redirectToHome) {
       return <Redirect to={"/"} />;
     } else if (redirectToSignin) {
       return <Redirect to={"/signin"} />;
     }
-    return <div>{!post ? <Loading /> : this.renderPost(post)}</div>;
+    return (
+      <div>
+        {!post ? <Loading /> : this.renderPost(post)}
+        <Comment
+          postId={post._id}
+          comments={comments}
+          updateComments={this.updateComments}
+        />
+      </div>
+    );
   }
 }
 
