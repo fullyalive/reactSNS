@@ -45,20 +45,18 @@ class Comment extends Component {
           />
           <button> 등록 </button>
         </form>
-        {comments.map((comment, i) => {
-          return (
-            <div key={i}>
-              <div>
-                {comment.text}
-                by
-                <Link to={`/user/${comment.postedBy._id}`}>
-                  {comment.postedBy.name}
-                </Link>
-                on {new Date(comment.created).toDateString()}
-              </div>
+        {comments.map((comment, i) => (
+          <div key={i}>
+            <div>
+              {comment.text}
+              by
+              <Link to={`/user/${comment.postedBy._id}`}>
+                {comment.postedBy.name}
+              </Link>
+              on {new Date(comment.created).toDateString()}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     );
   }
