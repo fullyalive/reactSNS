@@ -32,7 +32,8 @@ class SinglePost extends Component {
         this.setState({
           post: data,
           likes: data.likes.length,
-          like: this.checkLike(data.likes)
+          like: this.checkLike(data.likes),
+          comments: data.comments
         });
       }
     });
@@ -87,7 +88,7 @@ class SinglePost extends Component {
   };
 
   updateComments = comments => {
-    this.setState({ comments: comments });
+    this.setState({ comments });
   };
 
   renderPost = post => {
@@ -142,7 +143,7 @@ class SinglePost extends Component {
         {!post ? <Loading /> : this.renderPost(post)}
         <Comment
           postId={post._id}
-          comments={comments}
+          comments={comments.reverse()}
           updateComments={this.updateComments}
         />
       </div>

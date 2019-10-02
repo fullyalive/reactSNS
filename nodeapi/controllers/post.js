@@ -189,6 +189,7 @@ exports.unlike = (req, res) => {
 exports.comment = (req, res) => {
   let comment = req.body.comment;
   comment.postedBy = req.body.userId;
+
   Post.findByIdAndUpdate(
     req.body.postId,
     { $push: { comments: comment } },
@@ -209,9 +210,10 @@ exports.comment = (req, res) => {
 
 exports.uncomment = (req, res) => {
   let comment = req.body.comment;
+
   Post.findByIdAndUpdate(
     req.body.postId,
-    { $pull: { comments: {_id: comment._id} } },
+    { $pull: { comments: { _id: comment._id } } },
     { new: true }
   )
     .populate("comments.postedBy", "_id name")

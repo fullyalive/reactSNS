@@ -132,7 +132,7 @@ export const uncomment = (userId, token, postId, comment) => {
     },
     body: JSON.stringify({ userId, postId, comment })
   })
-    .then(response => {
+    .then(response => { 
       return response.json();
     })
     .catch(err => console.log(err));

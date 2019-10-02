@@ -32,12 +32,33 @@ class Comment extends Component {
   };
 
   render() {
+    const { comments } = this.props;
     return (
       <div>
-        <h2>댓글</h2>
+        <h2>댓글 {comments.length}</h2>
         <form onSubmit={this.addComment}>
-          <input type="text" onChange={this.handleChange} />
+          <input
+            type="text"
+            onChange={this.handleChange}
+            value={this.state.text}
+            placeholder="댓글을 입력하세요"
+          />
+          <button> 등록 </button>
         </form>
+        {comments.map((comment, i) => {
+          return (
+            <div key={i}>
+              <div>
+                {comment.text}
+                by
+                <Link to={`/user/${comment.postedBy._id}`}>
+                  {comment.postedBy.name}
+                </Link>
+                on {new Date(comment.created).toDateString()}
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }
