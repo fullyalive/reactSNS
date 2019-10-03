@@ -4,7 +4,8 @@ const {
   signin,
   signout,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  googleLogin
 } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
 const { userSignupValidator, passwordResetValidator } = require("../validator");
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.post("/signup", userSignupValidator, signup);
 router.post("/signin", signin);
+router.post("/signin/google", googleLogin);
 router.post("/signout", signout);
 
 // password forgot and reset routes
