@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const User = require("../models/user");
+const _ = require("lodash");
+const { sendEmail } = require("../helpers");
+
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -53,3 +56,85 @@ exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
   userProperty: "auth"
 });
+
+// add forgotPassword and resetPassword methods
+exports.forgotPassword = (req, res) => {
+  if (!req.body) return res.status(400).json({ message: "No request body" });
+  if (!req.body.email)
+    return res.status(400).json({ message: "No Email in request body" });
+
+  console.log("forgot password finding user with that email");
+  const { email } = req.body;
+  console.log("signin req.body", email);
+  // find the user based on email
+  User.findOne({ email }, (err, user) => {
+    // if err or no user
+    if (err || !user)
+      return res.status("401").json({
+        error: "이메일 정보가 없습니다. 다시 한 번 확인해주세요."
+      });
+
+    // generate a token with user id and secret
+    const token = jwt.sign(
+      { _id: user._id, iss: "NODEAPI" },
+      process.env.JWT_SECRET
+    );
+
+    // email data
+    const emailData = {
+      from: "noreply@node-react.com",
+      to: email,
+      subject: "[서비스이름] 비밀번호 변경",
+      text: `비밀번호를 변경하려면 다음 링크를 눌러주세요 : ${process.env.CLIENT_URL}/reset-password/${token}`,
+      html: `<p>비밀번호 변경하기 : </p> <p>${process.env.CLIENT_URL}/reset-password/${token}</p>`
+    };
+
+    return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+      if (err) {
+        return res.json({ message: err });
+      } else {
+        sendEmail(emailData);
+        return res.status(200).json({
+          message: `${email} : 주소로 이메일이 전송되었습니다. 링크로 접속해 비밀번호를 변경해주세요.`
+        });
+      }
+    });
+  });
+};
+
+// to allow user to reset password
+// first you will find the user in the database with user's resetPasswordLink
+// user model's resetPasswordLink's value must match the token
+// if the user's resetPasswordLink(token) matches the incoming req.body.resetPasswordLink(token)
+// then we got the right user
+
+exports.resetPassword = (req, res) => {
+  const { resetPasswordLink, newPassword } = req.body;
+
+  User.findOne({ resetPasswordLink }, (err, user) => {
+    // if err or no user
+    if (err || !user)
+      return res.status("401").json({
+        error: "유효하지 않습니다. 다시 한 번 시도해주세요."
+      });
+
+    const updatedFields = {
+      password: newPassword,
+      resetPasswordLink: ""
+    };
+
+    user = _.extend(user, updatedFields);
+    user.updated = Date.now();
+
+    user.save((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        });
+      }
+      res.json({
+        message: `새 비밀번호로 로그인해주세요.`
+      });
+    });
+  });
+};

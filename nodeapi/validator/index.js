@@ -50,3 +50,24 @@ exports.userSignupValidator = (req, res, next) => {
   }
   next();
 };
+
+exports.passwordResetValidator = (req, res, next) => {
+  // check for password
+  req.check("newPassword", "비밀번호를 입력해주세요.").notEmpty();
+  req
+    .check("newPassword")
+    .isLength({ min: 6 })
+    .withMessage("비밀번호는 6글자 이상이어야 합니다.")
+    .matches(/\d/)
+    .withMessage("비밀번호는 반드시 숫자를 포함해야합니다.");
+
+  // check for errors
+  const errors = req.validationErrors();
+  // if error show the first one as they happen
+  if (errors) {
+    const firstError = errors.map(error => error.msg)[0];
+    return res.status(400).json({ error: firstError });
+  }
+  // proceed to next middleware or ...
+  next();
+};
