@@ -33,6 +33,7 @@ class ForgotPassword extends Component {
               type="email"
               placeholder="이메일을 입력하세요"
               value={this.state.email}
+              name="email"
               onChange={e =>
                 this.setState({
                   email: e.target.value,

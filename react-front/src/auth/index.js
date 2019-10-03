@@ -87,6 +87,7 @@ export const resetPassword = resetInfo => {
   })
     .then(response => {
       console.log("forgot password response : ", response);
+      return response.json();
     })
     .catch(err => console.log(err));
 };
