@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Loading from "../core/Loading";
 import { signin, authenticate } from "../auth";
 
@@ -76,6 +76,9 @@ class Signin extends Component {
         <div style={{ display: error ? "" : "none" }}>{error}</div>
         {loading ? <Loading /> : ""}
         {this.signinForm(email, password)}
+        <div>
+          <Link to="/forgot-password">비밀번호 찾기</Link>
+        </div>
       </div>
     );
   }

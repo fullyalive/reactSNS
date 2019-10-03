@@ -71,7 +71,7 @@ exports.forgotPassword = (req, res) => {
     // if err or no user
     if (err || !user)
       return res.status("401").json({
-        error: "이메일 정보가 없습니다. 다시 한 번 확인해주세요."
+        error: "이메일을 찾을 수 없습니다. 다시 한 번 확인해주세요."
       });
 
     // generate a token with user id and secret
@@ -95,7 +95,7 @@ exports.forgotPassword = (req, res) => {
       } else {
         sendEmail(emailData);
         return res.status(200).json({
-          message: `${email} : 주소로 이메일이 전송되었습니다. 링크로 접속해 비밀번호를 변경해주세요.`
+          message: `이메일이 전송되었습니다. 받은 편지함을 확인해주세요.`
         });
       }
     });

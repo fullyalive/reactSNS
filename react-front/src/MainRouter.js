@@ -12,12 +12,14 @@ import FindPeople from "./user/FindPeople";
 import SinglePost from "./post/SinglePost";
 import NewPost from "./post/NewPost";
 import EditPost from "./post/EditPost";
+import ForgotPassword from "./user/ForgotPassword";
 
 const MainRouter = () => (
   <div>
     <Menu />
     <Switch>
       <Route exact path="/" component={Home} />
+      <Route exact path="/forgot-password" component={ForgotPassword} />
       <PrivateRoute exact path="/post/create" component={NewPost} />
       <Route exact path="/post/:postId" component={SinglePost} />
       <PrivateRoute exact path="/post/edit/:postId" component={EditPost} />
