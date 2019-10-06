@@ -5,6 +5,7 @@ const defaultEmailData = { from: "noreply@node-react.com" };
 dotenv.config();
 
 exports.sendEmail = emailData => {
+
   const transporter = nodeMailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,

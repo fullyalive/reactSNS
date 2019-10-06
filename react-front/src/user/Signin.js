@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Loading from "../core/Loading";
 import { signin, authenticate } from "../auth";
+import GoogleLogin from "./GoogleLogin";
 
 class Signin extends Component {
   constructor() {
@@ -66,6 +67,7 @@ class Signin extends Component {
 
   render() {
     const { email, password, error, redirectToReferer, loading } = this.state;
+    const GOOGLE_ID = process.env.GOOGLE_CLIENT_ID;
 
     if (redirectToReferer) {
       return <Redirect to="/" />; // from react-router-dom
@@ -76,6 +78,10 @@ class Signin extends Component {
         <div style={{ display: error ? "" : "none" }}>{error}</div>
         {loading ? <Loading /> : ""}
         {this.signinForm(email, password)}
+        <hr />
+        <div>
+          <GoogleLogin/>
+        </div>
         <div>
           <Link to="/forgot-password">비밀번호 찾기</Link>
         </div>
